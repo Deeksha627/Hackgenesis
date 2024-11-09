@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Map - ApkaDoctor</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display a map</title>
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 10%; bottom: 10%; width: 70%;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>ApkaDoctor</h1>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
+    </nav>
+  </header>
+
+  <main>
+      <h2>Map Results</h2>
+      <!-- You can add a map iframe, map library, or placeholder for now -->
+  </main>
+  <div id="map"></div>
+  <script>
+      maptilersdk.config.apiKey = 'dvEdEz5pZDt0v6LqeYSX';
+      const map = new maptilersdk.Map({
+        container: 'map', // container's id or the HTML element to render the map
+        style: maptilersdk.MapStyle.STREETS,
+        center: [72.62, 23.00], // starting position [lng, lat]
+        zoom: 16, // starting zoom
+      });
+
+            const marker = new maptilersdk.Marker()
+            .selLngLat([72.62,23.00])
+            .addTo(map);
+  </script>
+</body>
+</html>
