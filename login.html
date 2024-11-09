@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - ApkaDoctor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>ApkaDoctor</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="signup.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <form id="login-form">
+        <h2>Login</h2>
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="Enter your email" required>
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="Enter your password" required>
+        <small id="login-error" style="color: red; display: none;">Incorrect email or password. Please try again.</small>
+
+        <button type="button" onclick="validateLogin()">Login</button>
+        <div style="text-align: center; margin-top: 10px;">
+            <button type="button" onclick="redirectToSignup()" style="background: none; color: #0077cc; font-weight: bold; border: none;">Create an Account</button>
+        </div>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>

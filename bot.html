@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Bot</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+        .response {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Talking Bot</h1>
+        <input type="text" id="userInput" placeholder="Say something..." />
+        <button onclick="talk()">Talk</button>
+        <div class="response" id="botResponse"></div>
+    </div>
+
+    <script>
+        function talk() {
+            const userInput = document.getElementById("userInput").value.toLowerCase();
+            const botResponse = getBotResponse(userInput);
+
+            document.getElementById("botResponse").textContent = botResponse;
+
+            // Speak the response
+            const utterance = new SpeechSynthesisUtterance(botResponse);
+            speechSynthesis.speak(utterance);
+        }
+
+        function getBotResponse(input) {
+            // Simple response logic
+            if (input.includes("hello")) {
+                return "Hello! How can I help you today?";
+            } else if (input.includes("how are you")) {
+                return "I'm a bot, but I'm here to help you!";
+            } else if (input.includes("what's your name")) {
+                return "I'm your friendly talking bot.";
+            } else if (input.includes("bye")) {
+                return "Goodbye! Have a great day!";
+            } else {
+                return "I'm here to chat. Tell me more!";
+            }
+        }
+    </script>
+</body>
+</html>

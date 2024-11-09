@@ -1,0 +1,192 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Directory</title>
+    <style>
+        body {
+            background-color: skyblue;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .doctor-info {
+            text-align: left;
+        }
+        .doctor-info div {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .doctor-info div:last-child {
+            border-bottom: none;
+        }
+        .doctor-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Doctors Directory </h1>
+        <select id="specialization-select">
+            <option value="">Select Specialization</option>
+        </select>
+        <select id="location-select" disabled>
+            <option value="">Select Location</option>
+        </select>
+        <div class="doctor-info" id="doctor-info"></div>
+    </div>
+    <script>
+        const doctorsData = {
+            "Navrangpura": [
+                { "name": "Dr. Ravi Shah", "specialization": "Orthopedic Surgeon", "contact": "9876543212" },
+                { "name": "Dr. Meera Joshi", "specialization": "Pediatrician", "contact": "9876543213" },
+                { "name": "Dr. Aarav Modi", "specialization": "Dentist", "contact": "9876543230" },
+                { "name": "Dr. Kamal Joshi", "specialization": "Emergency Doctor", "contact": "9876543214" }
+            ],
+            "Satellite": [
+                { "name": "Dr. Neha Kapoor", "specialization": "Dermatologist", "contact": "9876543321" },
+                { "name": "Dr. Karan Patel", "specialization": "Cardiologist", "contact": "9876543322" },
+                { "name": "Dr. Sanjay Mehta", "specialization": "ENT Specialist", "contact": "9876543323" },
+                { "name": "Dr. Rakesh Malhotra", "specialization": "Emergency Doctor", "contact": "9876543324" }
+            ],
+            "Vastrapur": [
+                { "name": "Dr. Arjun Shah", "specialization": "Orthopedic Surgeon", "contact": "9876543331" },
+                { "name": "Dr. Leela Singh", "specialization": "General Physician", "contact": "9876543332" },
+                { "name": "Dr. Nina Rao", "specialization": "Pediatrician", "contact": "9876543333" },
+                { "name": "Dr. Sameer Jain", "specialization": "Emergency Doctor", "contact": "9876543334" }
+            ],
+            "Maninagar": [
+                { "name": "Dr. Ishita Mehta", "specialization": "Gynecologist", "contact": "9876543341" },
+                { "name": "Dr. Amit Shah", "specialization": "Neurologist", "contact": "9876543342" },
+                { "name": "Dr. Nidhi Patel", "specialization": "Emergency Doctor", "contact": "9876543343" }
+            ],
+            "Paldi": [
+                { "name": "Dr. Rahul Desai", "specialization": "Cardiologist", "contact": "9876543351" },
+                { "name": "Dr. Shalini Sharma", "specialization": "Dermatologist", "contact": "9876543352" },
+                { "name": "Dr. Ankit Joshi", "specialization": "Emergency Doctor", "contact": "9876543353" }
+            ],
+            "Bopal": [
+                { "name": "Dr. Kavita Rao", "specialization": "Pediatrician", "contact": "9876543361" },
+                { "name": "Dr. Vinay Kothari", "specialization": "Orthopedic Surgeon", "contact": "9876543362" },
+                { "name": "Dr. Farhan Khan", "specialization": "Emergency Doctor", "contact": "9876543363" }
+            ],
+            "Gota": [
+                { "name": "Dr. Suresh Mehta", "specialization": "Dentist", "contact": "9876543371" },
+                { "name": "Dr. Anjali Gupta", "specialization": "Gynecologist", "contact": "9876543372" },
+                { "name": "Dr. Nikhil Verma", "specialization": "Emergency Doctor", "contact": "9876543373" }
+            ],
+            "Thaltej": [
+                { "name": "Dr. Pooja Shah", "specialization": "Oncologist", "contact": "9876543381" },
+                { "name": "Dr. Mahesh Solanki", "specialization": "Dermatologist", "contact": "9876543382" },
+                { "name": "Dr. Rani Desai", "specialization": "Emergency Doctor", "contact": "9876543383" }
+            ],
+            "Shilaj": [
+                { "name": "Dr. Alok Tripathi", "specialization": "ENT Specialist", "contact": "9876543391" },
+                { "name": "Dr. Juhi Patel", "specialization": "Pediatrician", "contact": "9876543392" },
+                { "name": "Dr. Prakash Shah", "specialization": "Emergency Doctor", "contact": "9876543393" }
+            ],
+            "Chandkheda": [
+                { "name": "Dr. Sneha Gupta", "specialization": "Cardiologist", "contact": "9876543401" },
+                { "name": "Dr. Rajiv Thakur", "specialization": "General Physician", "contact": "9876543402" },
+                { "name": "Dr. Arvind Patel", "specialization": "Emergency Doctor", "contact": "9876543403" }
+            ]
+
+        };
+
+        const specializationSelect = document.getElementById("specialization-select");
+        const locationSelect = document.getElementById("location-select");
+        const doctorInfoDiv = document.getElementById("doctor-info");
+
+        // Populate specialization dropdown first
+        function populateSpecializations() {
+            const specializations = new Set();
+            Object.values(doctorsData).forEach(doctors => {
+                doctors.forEach(doctor => specializations.add(doctor.specialization));
+            });
+            Array.from(specializations).sort().forEach(specialization => {
+                const option = document.createElement("option");
+                option.value = specialization;
+                option.textContent = specialization;
+                specializationSelect.appendChild(option);
+            });
+        }
+
+        // Populate location dropdown based on specialization
+        function updateLocations(specialization) {
+            locationSelect.innerHTML = '<option value="">Select Location</option>';
+            locationSelect.disabled = !specialization;
+
+            if (specialization) {
+                const locations = Object.keys(doctorsData).filter(location => 
+                    doctorsData[location].some(doc => doc.specialization === specialization)
+                ).sort();
+
+                locations.forEach(location => {
+                    const option = document.createElement("option");
+                    option.value = location;
+                    option.textContent = location;
+                    locationSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Display doctors based on selected specialization and location
+        function displayDoctors(specialization, location) {
+            doctorInfoDiv.innerHTML = '';
+            if (location && doctorsData[location]) {
+                const doctors = doctorsData[location].filter(doc => doc.specialization === specialization);
+                
+                doctors.forEach(doctor => {
+                    const doctorDiv = document.createElement("div");
+                    doctorDiv.innerHTML = `
+                        <span>Name:</span> ${doctor.name}<br>
+                        <span>Specialization:</span> ${doctor.specialization}<br>
+                        <span>Contact:</span> ${doctor.contact}
+                    `;
+                    doctorInfoDiv.appendChild(doctorDiv);
+                });
+            }
+        }
+
+        // Event listeners for dropdowns
+        specializationSelect.addEventListener("change", (event) => {
+            const specialization = event.target.value;
+            updateLocations(specialization);
+            displayDoctors(specialization, locationSelect.value);
+        });
+
+        locationSelect.addEventListener("change", (event) => {
+            const location = event.target.value;
+            displayDoctors(specializationSelect.value, location);
+        });
+
+        populateSpecializations();
+    </script>
+</body>
+</html>
