@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ApkaDoctor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <div class="menu-item"><a href="index.html" class="menu-link">Home</a></div>
+            <div class="menu-item"><a href="about.html" class="menu-link">About Us</a></div>
+            <div class="menu-item"><a href="login_user.html" class="menu-link">Login</a></div>
+        </div>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div class="signup-form">
+        <h2>Create an Account</h2>
+        <form id="signupForm">
+            <div class="input-field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+            <div class="input-field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login_user.html">Login</a></p>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Store the user details in localStorage
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPassword', password);
+
+            // Redirect to login page after successful signup
+            alert("Signup successful! You can now log in.");
+            window.location.href = 'login_user.html';
+        });
+    </script>
+</body>
+</html>

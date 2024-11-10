@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ApkaDoctor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <div class="menu-item"><a href="index.html" class="menu-link">Home</a></div>
+            <div class="menu-item"><a href="about.html" class="menu-link">About Us</a></div>
+            <div class="menu-item"><a href="signup_user.html" class="menu-link">Sign Up</a></div>
+        </div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="input-field">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+                <div class="input-field">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required />
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="signup_user.html">Sign Up</a></p>
+            <p id="error-message" class="error-message">Invalid email or password. Please try again.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Get stored email and password from localStorage
+            const storedEmail = localStorage.getItem('userEmail');
+            const storedPassword = localStorage.getItem('userPassword');
+
+            // Check if entered email and password match the stored ones
+            if (email === storedEmail && password === storedPassword) {
+                alert("Login successful!");
+                window.location.href = 'index.html';  // Redirect to home page after successful login
+            } else {
+                document.getElementById('error-message').style.display = 'block';  // Show error message
+            }
+        });
+    </script>
+</body>
+</html>

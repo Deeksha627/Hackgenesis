@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApkaDoctor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="emergency-button">
+        <a href="map.html ">Emergency</a>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <div class="menu-item"><a href="index.html" style="color: white; text-decoration: none;">Home</a></div>
+            <div class="menu-item"><a href="about.html" style="color: white; text-decoration: none;">About Us</a></div>
+            <div class="menu-item"><a href="MentalHealthQuiz.html" style="color: white; text-decoration: none;">Mental Health Quiz</a></div>
+            <div class="menu-item">
+                Login
+                <div class="dropdown">
+                   <front color="red>"> <a href="login_doctor.html">Log in as Doctor</a></front>
+                    <a href="login_user.html">Log in as User</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                Signup
+                <div class="dropdown">
+                    <a href="signup_doctor.html">Sign up as Doctor</a>
+                    <a href="signup_user.html">Sign up as User</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Search Form -->
+    <div class="doctor-search">
+        <form id="doctorSearchForm">
+            <select id="area" name="area">
+                <option value="">--Select Area--</option>
+                <option value="Bodakdev">Bodakdev</option>
+                <option value="Navrangpura">Navrangpura</option>
+                <option value="Satellite">Satellite</option>
+                <option value="Vastrapur">Vastrapur</option>
+                <option value="Bopal">Bopal</option>
+                <option value="Thaltej">Thaltej</option>
+            </select>
+            <select id="specialization" name="specialization">
+                <option value="">--Select Specialization--</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Orthopedic">Orthopedic</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="Gynecologist">Gynecologist</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="ENT Specialist">ENT Specialist</option>
+                <option value="Ophthalmologist">Ophthalmologist</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+                <option value="General Physician">General Physician</option>
+            </select>
+            <button type="submit">Search Doctors</button>
+        </form>
+    </div>
+
+    <!-- Doctor Search Results -->
+    <div id="doctorResults" class="doctor-list"></div>
+
+    <script>
+        const doctors_by_speciality = {
+    "Cardiologist": [
+        {"name": "Dr. Aditi Shah", "address": "Bodakdev", "fees": 500, "experience": 10, "rating": 4.5},
+        {"name": "Dr. Aruna Patel", "address": "Navrangpura", "fees": 550, "experience": 14, "rating": 4.8},
+        {"name": "Dr. Anil Bhatt", "address": "Satellite", "fees": 600, "experience": 15, "rating": 4.8},
+        {"name": "Dr. Bhavik Patel", "address": "Bodakdev", "fees": 400, "experience": 7, "rating": 4.2},
+        {"name": "Dr. Rajeev Mehta", "address": "Vastrapur", "fees": 650, "experience": 18, "rating": 4.9},
+        {"name": "Dr. Ankit Mehta", "address": "Navrangpura", "fees": 570, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Mehul Shah", "address": "Thaltej", "fees": 650, "experience": 16, "rating": 4.7}
+    ],
+    "Dermatologist": [
+        {"name": "Dr. Rajesh Mehta", "address": "Navrangpura", "fees": 400, "experience": 8, "rating": 4.3},
+        {"name": "Dr. Sunil Desai", "address": "Bopal", "fees": 400, "experience": 8, "rating": 4.3},
+        {"name": "Dr. Nidhi Patel", "address": "Satellite", "fees": 400, "experience": 7, "rating": 4.2},
+        {"name": "Dr. Mehul Desai", "address": "Thaltej", "fees": 550, "experience": 11, "rating": 4.6},
+        {"name": "Dr. Sanjay Joshi", "address": "Vastrapur", "fees": 400, "experience": 8, "rating": 4.3},
+        {"name": "Dr. Simran Shah", "address": "Navrangpura", "fees": 420, "experience": 9, "rating": 4.4},
+        {"name": "Dr. Ayesha Desai", "address": "Bodakdev", "fees": 470, "experience": 10, "rating": 4.5}
+    ],
+    "Orthopedic": [
+        {"name": "Dr. Priya Patel", "address": "Satellite", "fees": 600, "experience": 12, "rating": 4.7},
+        {"name": "Dr. Payal Shah", "address": "Bodakdev", "fees": 650, "experience": 10, "rating": 4.9},
+        {"name": "Dr. Parag Shah", "address": "Navrangpura", "fees": 500, "experience": 10, "rating": 4.5},
+        {"name": "Dr. Neeta Shah", "address": "Vastrapur", "fees": 450, "experience": 8, "rating": 4.3},
+        {"name": "Dr. Rahul Desai", "address": "Thaltej", "fees": 550, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Vikram Mehta", "address": "Bopal", "fees": 580, "experience": 11, "rating": 4.7},
+        {"name": "Dr. Kiran Patel", "address": "Thaltej", "fees": 560, "experience": 10, "rating": 4.6}
+    ],
+    "Pediatrician": [
+        {"name": "Dr. Amit Bhatt", "address": "Vastrapur", "fees": 450, "experience": 15, "rating": 4.8},
+        {"name": "Dr. Hitesh Joshi", "address": "Bopal", "fees": 500, "experience": 9, "rating": 4.4},
+        {"name": "Dr. Kunal Shah", "address": "Satellite", "fees": 500, "experience": 9, "rating": 4.4},
+        {"name": "Dr. Darshna Desai", "address": "Thaltej", "fees": 550, "experience": 11, "rating": 4.6},
+        {"name": "Dr. Shubham Patel", "address": "Vastrapur", "fees": 450, "experience": 8, "rating": 4.5},
+        {"name": "Dr. Neelam Patel", "address": "Bopal", "fees": 470, "experience": 7, "rating": 4.2},
+        {"name": "Dr. Rahul Mehta", "address": "Satellite", "fees": 520, "experience": 10, "rating": 4.6}
+    ],
+    "Gynecologist": [
+        {"name": "Dr. Sejal Desai", "address": "Bopal", "fees": 550, "experience": 9, "rating": 4.6},
+        {"name": "Dr. Prachi Bhatt", "address": "Vastrapur", "fees": 600, "experience": 14, "rating": 4.7},
+        {"name": "Dr. Sanjay Joshi", "address": "Bodakdev", "fees": 450, "experience": 11, "rating": 4.5},
+        {"name": "Dr. Kiran Mehta", "address": "Navrangpura", "fees": 450, "experience": 9, "rating": 4.3},
+        {"name": "Dr. Shruti Shah", "address": "Thaltej", "fees": 500, "experience": 10, "rating": 4.6},
+        {"name": "Dr. Pooja Patel", "address": "Vastrapur", "fees": 480, "experience": 8, "rating": 4.4},
+        {"name": "Dr. Aditi Joshi", "address": "Satellite", "fees": 520, "experience": 7, "rating": 4.3}
+    ],
+    "Neurologist": [
+        {"name": "Dr. Rakesh Shah", "address": "Thaltej", "fees": 500, "experience": 11, "rating": 4.4},
+        {"name": "Dr. Hetal Patel", "address": "Navrangpura", "fees": 550, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Sweta Joshi", "address": "Satellite", "fees": 600, "experience": 14, "rating": 4.7},
+        {"name": "Dr. Vishal Patel", "address": "Vastrapur", "fees": 400, "experience": 6, "rating": 4.1},
+        {"name": "Dr. Akash Patel", "address": "Bopal", "fees": 600, "experience": 13, "rating": 4.7},
+        {"name": "Dr. Krishna Shah", "address": "Vastrapur", "fees": 580, "experience": 11, "rating": 4.6},
+        {"name": "Dr. Isha Mehta", "address": "Maninagar", "fees": 510, "experience": 9, "rating": 4.4}
+    ],
+    "ENT Specialist": [
+        {"name": "Dr. Neha Joshi", "address": "Maninagar", "fees": 400, "experience": 7, "rating": 4.2},
+        {"name": "Dr. Jay Desai", "address": "Maninagar", "fees": 500, "experience": 10, "rating": 4.5},
+        {"name": "Dr. Amish Patel", "address": "Memnagar", "fees": 500, "experience": 8, "rating": 4.4},
+        {"name": "Dr. Akash Patel", "address": "Sabarmati", "fees": 600, "experience": 13, "rating": 4.7},
+        {"name": "Dr. Shweta Shah", "address": "Bodakdev", "fees": 550, "experience": 9, "rating": 4.6},
+        {"name": "Dr. Pooja Desai", "address": "Naranpura", "fees": 520, "experience": 7, "rating": 4.4},
+        {"name": "Dr. Sunil Patel", "address": "Chandkheda", "fees": 500, "experience": 10, "rating": 4.5}
+    ],
+    "Ophthalmologist": [
+        {"name": "Dr. Shilpa Trivedi", "address": "Naranpura", "fees": 500, "experience": 10, "rating": 4.5},
+        {"name": "Dr. Rohit Mehta", "address": "Odhav", "fees": 450, "experience": 8, "rating": 4.3},
+        {"name": "Dr. Kavita Patel", "address": "Navrangpura", "fees": 450, "experience": 7, "rating": 4.2},
+        {"name": "Dr. Vishal Shah", "address": "Nava Vadaj", "fees": 450, "experience": 6, "rating": 4.1},
+        {"name": "Dr. Ramesh Patel", "address": "Vastrapur", "fees": 460, "experience": 9, "rating": 4.4},
+        {"name": "Dr. Anita Shah", "address": "Thaltej", "fees": 490, "experience": 10, "rating": 4.6},
+        {"name": "Dr. Pooja Desai", "address": "Satellite", "fees": 470, "experience": 8, "rating": 4.5}
+    ],
+    "Psychiatrist": [
+        {"name": "Dr. Sameer Mehta", "address": "Paldi", "fees": 450, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Mira Shah", "address": "Vasna", "fees": 500, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Amit Shah", "address": "Vastrapur", "fees": 500, "experience": 12, "rating": 4.6},
+        {"name": "Dr. Rupa Mehta", "address": "Ghatlodia", "fees": 500, "experience": 10, "rating": 4.5},
+        {"name": "Dr. Sanjana Desai", "address": "Thaltej", "fees": 510, "experience": 13, "rating": 4.7},
+        {"name": "Dr. Rahul Mehta", "address": "Vastrapur", "fees": 520, "experience": 9, "rating": 4.4},
+        {"name": "Dr. Tejal Patel", "address": "Bopal", "fees": 490, "experience": 8, "rating": 4.5}
+    ],
+    "General Physician": [
+        {"name": "Dr. Vikram Parmar", "address": "Ghatlodia", "fees": 600, "experience": 16, "rating": 4.9},
+        {"name": "Dr. Payal Desai", "address": "Ellisbridge", "fees": 550, "experience": 12, "rating": 4.8},
+        {"name": "Dr. Kalpesh Mehta", "address": "Satellite", "fees": 550, "experience": 13, "rating": 4.8},
+        {"name": "Dr. Shruti Desai", "address": "Chandkheda", "fees": 500, "experience": 10, "rating": 4.4},
+        {"name": "Dr. Mahesh Patel", "address": "Vastrapur", "fees": 560, "experience": 11, "rating": 4.7},
+        {"name": "Dr. Aditi Joshi", "address": "Bopal", "fees": 530, "experience": 9, "rating": 4.5},
+        {"name": "Dr. Neelam Mehta", "address": "Thaltej", "fees": 500, "experience": 10, "rating": 4.4}
+    ]
+}
+
+        document.getElementById('doctorSearchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const area = document.getElementById('area').value;
+            const specialization = document.getElementById('specialization').value;
+            const resultsContainer = document.getElementById('doctorResults');
+
+            // Clear previous results
+            resultsContainer.innerHTML = '';
+
+            if (!area || !specialization) {
+                alert('Please select both area and specialization.');
+                return;
+            }
+
+            // Filter doctors based on specialization and area
+            const doctors = doctors_by_speciality[specialization] || [];
+            const filteredDoctors = doctors.filter(doctor => doctor.address === area);
+
+            if (filteredDoctors.length > 0) {
+                filteredDoctors.forEach(doctor => {
+                    const doctorDiv = document.createElement('div');
+                    doctorDiv.classList.add('doctor-item');
+                    doctorDiv.innerHTML = `
+                        <h3>${doctor.name}</h3>
+                        <p>Address: ${doctor.address}</p>
+                        <p>Fees: ₹${doctor.fees}</p>
+                        <p>Experience: ${doctor.experience} years</p>
+                        <p>Rating: ${doctor.rating}</p>
+                        <button onclick="window.location.href='book_appointment.html'">Book an Appointment</button>
+                        <button onclick="window.location.href='chat_call.html'">Chat/Call</button>
+                    `;
+                    resultsContainer.appendChild(doctorDiv);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>No doctors found for this area and specialization.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>

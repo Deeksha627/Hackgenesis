@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Self-Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 60px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question-container {
+            margin-bottom: 20px;
+        }
+        .question-container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .question-container input {
+            margin-right: 40px;
+        }
+        .result {
+            display: none;
+            text-align: center;
+            font-size: 2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Mental Health Self-Assessment</h1>
+    <form id="assessmentForm">
+        <div class="question-container">
+            <label for="question1">1. How often have you felt down, depressed, or hopeless in the past two weeks?</label>
+            <input type="radio" name="q1" value="3" id="q1-1"><label for="q1-1">Nearly every day</label><br>
+            <input type="radio" name="q1" value="2" id="q1-2"><label for="q1-2">More than half the days</label><br>
+            <input type="radio" name="q1" value="1" id="q1-3"><label for="q1-3">Several days</label><br>
+            <input type="radio" name="q1" value="0" id="q1-4"><label for="q1-4">Not at all</label><br>
+        </div>
+
+        <div class="question-container">
+            <label for="question2">2. How often have you had trouble sleeping, staying asleep, or sleeping too much?</label>
+            <input type="radio" name="q2" value="3" id="q2-1"><label for="q2-1">Nearly every day</label><br>
+            <input type="radio" name="q2" value="2" id="q2-2"><label for="q2-2">More than half the days</label><br>
+            <input type="radio" name="q2" value="1" id="q2-3"><label for="q2-3">Several days</label><br>
+            <input type="radio" name="q2" value="0" id="q2-4"><label for="q2-4">Not at all</label><br>
+        </div>
+
+        <div class="question-container">
+            <label for="question3">3. How often have you felt little interest or pleasure in doing things you used to enjoy?</label>
+            <input type="radio" name="q3" value="3" id="q3-1"><label for="q3-1">Nearly every day</label><br>
+            <input type="radio" name="q3" value="2" id="q3-2"><label for="q3-2">More than half the days</label><br>
+            <input type="radio" name="q3" value="1" id="q3-3"><label for="q3-3">Several days</label><br>
+            <input type="radio" name="q3" value="0" id="q3-4"><label for="q3-4">Not at all</label><br>
+        </div>
+
+        <div class="question-container">
+            <label for="question4">4. How often have you felt nervous, anxious, or on edge?</label>
+            <input type="radio" name="q4" value="3" id="q4-1"><label for="q4-1">Nearly every day</label><br>
+            <input type="radio" name="q4" value="2" id="q4-2"><label for="q4-2">More than half the days</label><br>
+            <input type="radio" name="q4" value="1" id="q4-3"><label for="q4-3">Several days</label><br>
+            <input type="radio" name="q4" value="0" id="q4-4"><label for="q4-4">Not at all</label><br>
+        </div>
+
+        <button type="button" onclick="submitAssessment()">Submit</button>
+    </form>
+
+    <div id="result" class="result"></div>
+
+    <script>
+        function submitAssessment() {
+            var totalScore = 0;
+            var questions = ['q1', 'q2', 'q3', 'q4'];
+            
+            for (var i = 0; i < questions.length; i++) {
+                var radios = document.getElementsByName(questions[i]);
+                for (var j = 0; j < radios.length; j++) {
+                    if (radios[j].checked) {
+                        totalScore += parseInt(radios[j].value);
+                    }
+                }
+            }
+            
+            // Display the result
+            var resultText = "Your total score is: " + totalScore + " out of 12.<br>";
+
+            if (totalScore >= 9) {
+                resultText += "You may be experiencing significant symptoms of depression or anxiety. It is recommended to seek support from a mental health professional.";
+            } else if (totalScore >= 5) {
+                resultText += "You may be experiencing moderate symptoms. Consider seeking support if these symptoms persist.";
+            } else {
+                resultText += "Your responses suggest you are generally managing well, but if you ever experience persistent symptoms, don't hesitate to seek help.";
+            }
+
+            document.getElementById("result").innerHTML = resultText;
+            document.getElementById("result").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

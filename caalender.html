@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - ApkaDoctor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <div class="menu-item"><a href="index.html">Home</a></div>
+            <div class="menu-item"><a href="about.html">About Us</a></div>
+            <div class="menu-item"><a href="login_user.html">Login</a></div>
+        </div>
+    </div>
+
+    <!-- Appointment Booking Section -->
+    <div class="appointment-section">
+        <h2>Book an Appointment</h2>
+        <div class="calendar-container" id="calendar-container"></div>
+    </div>
+
+    <script>
+        // Simulate available time slots for each day (for simplicity)
+        const timeSlots = [
+            { time: "09:00 AM - 10:00 AM", available: true },
+            { time: "10:00 AM - 11:00 AM", available: true },
+            { time: "11:00 AM - 12:00 PM", available: false }, // Slot not available
+            { time: "12:00 PM - 01:00 PM", available: true },
+            { time: "02:00 PM - 03:00 PM", available: true },
+            { time: "03:00 PM - 04:00 PM", available: false }, // Slot not available
+            { time: "04:00 PM - 05:00 PM", available: true }
+        ];
+
+        // Function to generate the next 7 days and display available slots
+        function generateCalendar() {
+            const calendarContainer = document.getElementById("calendar-container");
+            const today = new Date();
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            
+            let htmlContent = "";
+
+            for (let i = 0; i < 7; i++) {
+                const currentDate = new Date(today);
+                currentDate.setDate(today.getDate() + i);
+
+                const dayName = daysOfWeek[currentDate.getDay()];
+                const formattedDate = currentDate.toLocaleDateString();
+
+                htmlContent += `
+                    <div class="day-card">
+                        <div class="day-title">${dayName}, ${formattedDate}</div>
+                        <div class="slots">
+                            ${generateSlots(i)}
+                        </div>
+                    </div>
+                `;
+            }
+
+            calendarContainer.innerHTML = htmlContent;
+        }
+
+        // Function to generate slots for each day
+        function generateSlots(dayIndex) {
+            let slotHTML = "";
+            timeSlots.forEach(slot => {
+                const slotClass = slot.available ? "available" : "unavailable";
+                slotHTML += `
+                    <div class="slot ${slotClass}">
+                        <span>${slot.time}</span>
+                        <button class="btn-appointment" onclick="bookAppointment('${slot.time}', ${dayIndex})" ${slot.available ? '' : 'disabled'}>Book</button>
+                    </div>
+                `;
+            });
+            return slotHTML;
+        }
+
+        // Function to handle booking an appointment
+        function bookAppointment(slotTime, dayIndex) {
+            const selectedDate = new Date();
+            selectedDate.setDate(selectedDate.getDate() + dayIndex);
+            const formattedDate = selectedDate.toLocaleDateString();
+
+            alert(`You have booked an appointment for ${slotTime} on ${formattedDate}.`);
+        }
+
+        // Initialize the calendar
+        generateCalendar();
+    </script>
+
+</body>
+</html>

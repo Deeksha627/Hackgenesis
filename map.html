@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map - ApkaDoctor</title>
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    #hospital-info {
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      z-index: 10;
+      max-height: 80%;
+      overflow-y: auto;
+    }
+    #hospital-info h3 {
+      margin: 0 0 10px;
+    }
+    #hospital-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #hospital-list li {
+      padding: 5px;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="hospital-info">
+    <h3>Top 10 Nearest Hospitals</h3>
+    <button id="findHospitalBtn">Find Nearest Hospitals</button>
+    <ul id="hospital-list"></ul>
+  </div>
+
+  <div id="map"></div>
+
+  <script>
+    // Initialize Map
+    maptilersdk.config.apiKey = 'dvEdEz5pZDt0v6LqeYSX';
+    const map = new maptilersdk.Map({
+      container: 'map',
+      style: maptilersdk.MapStyle.STREETS,
+      center: [72.62, 23.00],  // Default starting position [lng, lat]
+      zoom: 16,  // Starting zoom level
+    });
+
+    // 20 example hospitals with 3-star rating (Latitude, Longitude, Name, Rating)
+    const hospitals = [
+      { name: "Hospital A", coordinates: [72.62, 23.00], rating:  4.9},
+      { name: "Hospital B", coordinates: [72.65, 23.01], rating: 4.8 },
+      { name: "Hospital C", coordinates: [72.63, 23.02], rating: 3 },
+      { name: "Hospital D", coordinates: [72.61, 23.05], rating: 4 },
+      { name: "Hospital E", coordinates: [72.60, 23.03], rating: 3 },
+      { name: "Hospital F", coordinates: [72.64, 23.04], rating: 3 },
+      { name: "Hospital G", coordinates: [72.62, 23.07], rating: 3 },
+      { name: "Hospital H", coordinates: [72.66, 23.06], rating: 3 },
+      { name: "Hospital I", coordinates: [72.58, 23.02], rating: 3 },
+      { name: "Hospital J", coordinates: [72.67, 23.08], rating: 3 },
+      { name: "Hospital K", coordinates: [72.68, 23.09], rating: 3 },
+      { name: "Hospital L", coordinates: [72.69, 23.10], rating: 3 },
+
+
+  
+    ];
+
+    // Add markers for 3-star hospitals on the map
+    const threeStarHospitals = hospitals.filter(hospital => hospital.rating === 3);
+    
+    threeStarHospitals.forEach(hospital => {
+      new maptilersdk.Marker()
+        .setLngLat(hospital.coordinates)
+        .setPopup(new maptilersdk.Popup().setHTML(`${hospital.name} (3-star)`))
+        .addTo(map);
+    });
+
+    // Function to calculate the distance between two points using the Haversine formula
+    function haversine(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radius of the Earth in kilometers
+      const dLat = toRadians(lat2 - lat1);
+      const dLon = toRadians(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // Distance in kilometers
+      return distance;
+    }
+
+    // Helper function to convert degrees to radians
+    function toRadians(degrees) {
+      return degrees * (Math.PI / 180);
+    }
+
+    // Get the current location of the user
+    function getCurrentLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+
+          const userLocation = [userLon, userLat]; // [lng, lat]
+
+          // Add a marker for the user's location
+          new maptilersdk.Marker()
+            .setLngLat(userLocation)
+            .setPopup(new maptilersdk.Popup().setHTML('Your Location'))
+            .addTo(map);
+
+          // Display user location on map
+          map.flyTo({
+            center: userLocation,
+            zoom: 16
+          });
+
+          // Add button functionality to find nearest hospitals
+          document.getElementById('findHospitalBtn').onclick = function() {
+            let nearestHospitals = findNearestHospitals(userLat, userLon);
+            
+            // Clear the current list of hospitals
+            document.getElementById('hospital-list').innerHTML = '';
+
+            // Add the nearest 10 hospitals to the list
+            nearestHospitals.forEach(hospital => {
+              const li = document.createElement('li');
+              li.innerHTML = `${hospital.name} - ${hospital.distance.toFixed(2)} km`;
+              document.getElementById('hospital-list').appendChild(li);
+
+              // Add a marker for the hospital
+              new maptilersdk.Marker()
+                .setLngLat(hospital.coordinates)
+                .setPopup(new maptilersdk.Popup().setHTML(`${hospital.name}<br>Distance: ${hospital.distance.toFixed(2)} km`))
+                .addTo(map);
+            });
+          };
+        });
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    // Find the nearest hospitals by calculating the distance to all hospitals
+    function findNearestHospitals(userLat, userLon) {
+      const distances = hospitals.map(hospital => {
+        const distance = haversine(userLat, userLon, hospital.coordinates[1], hospital.coordinates[0]);
+        return { ...hospital, distance }; // Add the distance to each hospital
+      });
+
+      // Sort the hospitals by distance (ascending)
+      distances.sort((a, b) => a.distance - b.distance);
+
+      // Return the top 10 nearest hospitals
+      return distances.slice(0, 10);
+    }
+
+    // Call the function to get the current location when the page loads
+    getCurrentLocation();
+  </script>
+
+</body>
+</html>

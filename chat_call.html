@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat/Call with Doctor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .chat-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .chat-box {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            height: 400px;
+        }
+
+        .chat-message {
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            background-color: #e9f7fe;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            background-color: #d1f1d1;
+            margin-left: auto;
+        }
+
+        .chat-message.doctor {
+            background-color: #f1f1f1;
+            margin-right: auto;
+        }
+
+        .message-input {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .message-input textarea {
+            width: 80%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            resize: none;
+            height: 60px;
+        }
+
+        .message-input button {
+            width: 20%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .message-input button:hover {
+            background-color: #45a049;
+        }
+
+        /* Video call button */
+        .video-call-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .video-call-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <h2>Chat with Doctor</h2>
+        
+        <!-- Chat Box -->
+        <div class="chat-box" id="chatBox">
+            <!-- Messages will appear here -->
+        </div>
+
+        <!-- Message Input Area -->
+        <div class="message-input">
+            <textarea id="messageInput" placeholder="Type your message..." required></textarea>
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <!-- Video Call Button -->
+        <button class="video-call-btn" onclick="startVideoCall()">Start Video Call</button>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const messageInput = document.getElementById('messageInput');
+
+        // Function to simulate sending a message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === "") return;
+
+            // Display the user's message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.classList.add('chat-message', 'user');
+            userMessageDiv.textContent = message;
+            chatBox.appendChild(userMessageDiv);
+
+            // Simulate a response from the doctor
+            setTimeout(() => {
+                const doctorMessageDiv = document.createElement('div');
+                doctorMessageDiv.classList.add('chat-message', 'doctor');
+                doctorMessageDiv.textContent = "Doctor will get back to you shortly!";
+                chatBox.appendChild(doctorMessageDiv);
+
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000); // Simulate a delay of 1 second for the doctor's response
+
+            // Clear the message input field
+            messageInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
+
+        // Optional: Handle pressing Enter to send the message
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Function to simulate starting a video call
+        function startVideoCall() {
+            alert("Doctor is not available now...");
+
+            // You can integrate actual video calling functionality here using WebRTC or third-party APIs
+            // For example, using a service like Twilio or Agora to create a real video call experience.
+            // In this case, we are just simulating the behavior with a simple alert.
+        }
+    </script>
+
+</body>
+</html>

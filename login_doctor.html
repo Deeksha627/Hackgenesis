@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Basic styling for the login page */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .navbar .menu a:hover {
+            background-color: #34495e;
+            border-radius: 5px;
+        }
+        .login-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .login-form h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .login-form label {
+            font-size: 16px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .login-form input, .login-form select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s ease-in-out;
+        }
+        .login-form input:focus, .login-form select:focus {
+            border-color: #2c3e50;
+            outline: none;
+        }
+        .login-form button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .login-form button:hover {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="signup_doctor.html">Sign up as Doctor</a>
+            <a href="login_doctor.html">Log in as Doctor</a>
+        </div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-form">
+        <h2>Doctor Login</h2>
+        <form id="doctorLoginForm">
+            <label for="name">Doctor Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="specialization">Specialization:</label>
+            <select id="specialization" name="specialization" required>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Orthopedic">Orthopedic</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="Gynecologist">Gynecologist</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="ENT Specialist">ENT Specialist</option>
+                <option value="Ophthalmologist">Ophthalmologist</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+                <option value="General Physician">General Physician</option>
+            </select>
+
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to get doctors data from localStorage or initialize if not present
+        function getDoctorsData() {
+            const storedData = localStorage.getItem('doctors_by_speciality');
+            return storedData ? JSON.parse(storedData) : {
+                "Cardiologist": [],
+                "Dermatologist": [],
+                "Orthopedic": [],
+                "Pediatrician": [],
+                "Gynecologist": [],
+                "Neurologist": [],
+                "ENT Specialist": [],
+                "Ophthalmologist": [],
+                "Psychiatrist": [],
+                "General Physician": []
+            };
+        }
+
+        // Handle login form submission
+        document.getElementById('doctorLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const specialization = document.getElementById('specialization').value;
+
+            if (!name || !specialization) {
+                alert('Please fill out all fields');
+                return;
+            }
+
+            // Get doctors data from localStorage
+            const doctorsData = getDoctorsData();
+
+            // Check if the doctor is registered under the selected specialization
+            const doctorExists = doctorsData[specialization].some(doctor => doctor.name === name);
+
+            if (doctorExists) {
+                // Doctor is registered, log them in
+                alert('Login successful!');
+                // Store a flag to simulate the login session
+                localStorage.setItem('loggedInDoctor', JSON.stringify({ name, specialization }));
+
+                // Redirect to the doctor's dashboard or another page
+                window.location.href = 'doctor_dashboard.html'; // You can change this to the page you want
+            } else {
+                // Doctor not found in the selected specialization
+                alert('Doctor not found. Please check your details or sign up.');
+            }
+        });
+    </script>
+
+</body>
+</html>

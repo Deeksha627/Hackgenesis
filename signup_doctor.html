@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up as Doctor</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Same styles as before for better visual appeal */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .navbar .menu a:hover {
+            background-color: #34495e;
+            border-radius: 5px;
+        }
+        .signup-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .signup-form h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .signup-form label {
+            font-size: 16px;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        .signup-form input, .signup-form select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s ease-in-out;
+        }
+        .signup-form input:focus, .signup-form select:focus {
+            border-color: #2c3e50;
+            outline: none;
+        }
+        .signup-form button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .signup-form button:hover {
+            background-color: #34495e;
+        }
+        .signup-form .form-group {
+            margin-bottom: 20px;
+        }
+        .signup-form .form-group:last-child {
+            margin-bottom: 0;
+        }
+        .signup-form .form-group input,
+        .signup-form .form-group select {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="signup_doctor.html">Sign up as Doctor</a>
+            <a href="login_doctor.html">Log in as Doctor</a>
+        </div>
+    </div>
+
+    <!-- Sign up form -->
+    <div class="signup-form">
+        <h2>Sign up as Doctor</h2>
+        <form id="doctorSignupForm">
+            <div class="form-group">
+                <label for="name">Doctor Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="experience">Experience (in years):</label>
+                <input type="number" id="experience" name="experience" required>
+            </div>
+
+            <div class="form-group">
+                <label for="specialization">Specialization:</label>
+                <select id="specialization" name="specialization" required>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Orthopedic">Orthopedic</option>
+                    <option value="Pediatrician">Pediatrician</option>
+                    <option value="Gynecologist">Gynecologist</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="ENT Specialist">ENT Specialist</option>
+                    <option value="Ophthalmologist">Ophthalmologist</option>
+                    <option value="Psychiatrist">Psychiatrist</option>
+                    <option value="General Physician">General Physician</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fees">Consultation Fees (in ₹):</label>
+                <input type="number" id="fees" name="fees" required>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to get doctors from localStorage or initialize if not present
+        function getDoctorsData() {
+            const storedData = localStorage.getItem('doctors_by_speciality');
+            return storedData ? JSON.parse(storedData) : {
+                "Cardiologist": [],
+                "Dermatologist": [],
+                "Orthopedic": [],
+                "Pediatrician": [],
+                "Gynecologist": [],
+                "Neurologist": [],
+                "ENT Specialist": [],
+                "Ophthalmologist": [],
+                "Psychiatrist": [],
+                "General Physician": []
+            };
+        }
+
+        // Function to save doctors data to localStorage
+        function saveDoctorsData(doctorsData) {
+            localStorage.setItem('doctors_by_speciality', JSON.stringify(doctorsData));
+        }
+
+        // Handle form submission and add doctor to localStorage
+        document.getElementById('doctorSignupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const experience = parseInt(document.getElementById('experience').value, 10);
+            const specialization = document.getElementById('specialization').value;
+            const address = document.getElementById('address').value;
+            const fees = parseInt(document.getElementById('fees').value, 10);
+
+            // Validate input
+            if (!name || !experience || !specialization || !address || !fees) {
+                alert('All fields are required!');
+                return;
+            }
+
+            // Get existing doctors data from localStorage
+            const doctorsData = getDoctorsData();
+
+            // Create new doctor object
+            const newDoctor = {
+                name: name,
+                address: address,
+                fees: fees,
+                experience: experience,
+                rating: 4.5 // Default rating
+            };
+
+            // Add new doctor to the specific specialization
+            doctorsData[specialization].push(newDoctor);
+
+            // Save updated doctors data back to localStorage
+            saveDoctorsData(doctorsData);
+
+            // Success message
+            alert('Doctor added successfully!');
+
+            // Clear form
+            document.getElementById('doctorSignupForm').reset();
+        });
+    </script>
+
+</body>
+</html>

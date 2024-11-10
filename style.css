@@ -1,0 +1,826 @@
+
+        body {
+            background-image: url('Picsart_24-11-09_05-14-33-466.jpg');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .navbar .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu-item {
+            position: relative;
+            cursor: pointer;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #555;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            top: 30px;
+            z-index: 1;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease;
+        }
+
+        .dropdown a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .dropdown a:hover {
+            color: #007bff;
+        }
+
+        .menu-item:hover .dropdown {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Shared Search Bar Styles */
+        .search-bar,
+        .doctor-search {
+            margin: 150px auto;  /* Increased margin-top to move it down */
+            display: flex;
+            justify-content: center;
+            width: 60%;  /* Increased width to make it slightly bigger */
+            max-width: 800px;  /* Increase the max width for larger screens */
+        }
+
+        .search-bar,
+        .doctor-search form {
+            background-color: rgba(0, 0, 0, 0.7);  /* Transparent black background */
+            padding: 20px;  /* Increased padding for more space inside the search bar */
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
+
+        .search-bar input[type="text"],
+        .doctor-search input[type="text"],
+        .doctor-search select {
+            padding: 12px;  /* Increased padding for more space inside input fields */
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        .search-bar button,
+        .doctor-search button {
+            padding: 12px;  /* Increased padding for more space inside the button */
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover,
+        .doctor-search button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the doctor search results */
+        .results-container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .doctor-item {
+            margin-bottom: 20px;
+            background-color: #333;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .doctor-item h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .doctor-item p {
+            margin: 5px 0;
+        }
+
+        .doctor-item .doctor-buttons {
+            margin-top: 10px;
+        }
+
+        .doctor-item button {
+            padding: 8px 16px;
+            margin-right: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+        }
+
+        .doctor-item button.chat {
+            background-color: #007bff;
+        }
+
+        .doctor-item button:hover {
+            background-color: #218838;
+        }
+
+        .doctor-item button.chat:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-bar,
+            .doctor-search form,
+            .results-container {
+                width: 90%;
+            }
+        }
+
+/* Add the following CSS styles */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+}
+
+.menu-item {
+    margin-left: 20px;
+}
+
+.menu-item a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.menu-item:hover {
+    background-color: #444;
+}
+
+.dropdown {
+    display: none;
+}
+
+.menu-item:hover .dropdown {
+    display: block;
+}
+
+/* Doctor search form */
+.doctor-search {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.doctor-search form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 500px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-search select,
+.doctor-search button {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.doctor-search button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.doctor-search button:hover {
+    background-color: #0056b3;
+}
+
+/* Doctor results container */
+#doctorResults {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.doctor-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.doctor-item {
+    background-color: #333;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.doctor-item h3 {
+    margin-top: 0;
+}
+
+.doctor-item p {
+    margin: 5px 0;
+}
+
+.doctor-item button {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.doctor-item button:hover {
+    background-color: #218838;
+}
+.doctor-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #333;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+/* Basic styling for navbar */
+.navbar {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .title {
+    font-size: 24px;
+    color: white;
+}
+
+.menu {
+    display: flex;
+    gap: 15px;
+}
+
+.menu-item {
+    position: relative;
+    color: white;
+}
+
+/* Change text color on hover for Login and Signup */
+.menu-item a {
+    color: white;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    color: black;
+}
+
+.menu-item a:hover {
+    color: black;  /* Change the text color to black on hover */
+}
+
+/* Styling for dropdown menu */
+.menu-item .dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.menu-item:hover .dropdown {
+    display: block;
+}
+
+.menu-item .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.menu-item .dropdown a:hover {
+    background-color: #f1f1f1;
+}
+/* Emergency Button Styling */
+.emergency-button {
+    position: fixed;
+    top: 20%;  /* Centers it vertically */
+    left: 10%;  /* Places it slightly from the left side */
+    transform: translateY(-50%);  /* Fine-tune vertical centering */
+    z-index: 9999;  /* Ensure it stays on top of other elements */
+    width: 250px;   /* Fixed width for the button */
+    height: 70px;   /* Increased height for better visibility */
+    display: flex;
+    justify-content: center;  /* Horizontally center the text */
+    align-items: center;      /* Vertically center the text */
+    background-color: #f44336;  /* Red background */
+    border-radius: 10px;  /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);  /* Shadow for depth */
+    transition: background-color 0.3s ease;  /* Smooth background change on hover */
+}
+
+.emergency-button a {
+    color: white;  /* White text color */
+    font-size: 20px;  /* Larger font size for better readability */
+    font-weight: bold;
+    padding: 15px 30px;  /* Add padding for better click area */
+    text-decoration: none;
+    text-align: center;  /* Center text inside the link */
+    width: 100%;  /* Ensure the link takes the full width of the button */
+}
+
+/* Hover effect for the emergency button */
+.emergency-button:hover {
+    background-color: #d32f2f;  /* Dark red background on hover */
+}
+
+.emergency-button a:hover {
+    color: white;  /* Keep the text white on hover */
+}
+
+<style>
+    /* Basic styling */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .chat-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: black; /* Make the title text black */
+    }
+
+    .chat-box {
+        max-height: 600px;
+        overflow-y: auto;
+        border: 1px solid #ccc; /* Lighter border for chat box */
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+        background-color: #f9f9f9;
+        height: 400px;
+        color: black; /* Ensure all text in the chat box is black */
+    }
+
+    .chat-message {
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        background-color: #e9f7fe;
+        max-width: 80%;
+        border: 1px solid #bbb; /* Darker border for messages */
+        color: black; /* Set text color to black for all messages */
+    }
+
+    .chat-message.user {
+        background-color: #d1f1d1;
+        margin-left: auto;
+        border-color: #88c88f; /* Darker border for user message */
+    }
+
+    .chat-message.doctor {
+        background-color: #f1f1f1;
+        margin-right: auto;
+        border-color: #aaa; /* Darker border for doctor's message */
+    }
+
+    .message-input {
+        display: flex;
+        margin-top: 10px;
+    }
+
+    .message-input textarea {
+        width: 80%;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        resize: none;
+        height: 60px;
+        color: black; /* Text input in black */
+    }
+
+    .message-input button {
+        width: 20%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .message-input button:hover {
+        background-color: #45a049;
+    }
+
+    /* Video call button */
+    .video-call-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .video-call-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+/* Appointment Section */
+.appointment-section {
+    text-align: center;
+    padding: 50px 20px;
+    margin-top: 60px;  /* Ensures it doesn't overlap with the navbar */
+}
+
+.appointment-section h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Appointment Button */
+.btn-appointment {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-appointment:hover {
+    background-color: #218838;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .navbar .menu {
+        flex-direction: column;
+    }
+
+    .emergency-button {
+        top: 10px;
+        left: 10px;
+    }
+
+    .appointment-section h2 {
+        font-size: 24px;
+    }
+
+    .btn-appointment {
+        padding: 12px 25px;
+        font-size: 14px;
+    }
+}
+/* Center the button within its section */
+.appointment-section {
+    display: flex;
+    justify-content: center; /* Horizontally center the button */
+    align-items: center;     /* Vertically center the button */
+    height: 100vh;           /* Use full viewport height */
+    text-align: center;      /* Center text inside the section */
+}
+
+.btn-appointment {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF; /* Adjust the color as needed */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-appointment:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+/* Basic Styles for Consistency */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hide Emergency Button on Login and Signup Pages */
+body:not(.login, .signup) .emergency-button {
+    display: block;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #333;
+    padding: 10px 0;
+    color: white;
+    text-align: center;
+}
+
+.navbar .menu {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.navbar .menu-item {
+    list-style: none;
+    display: inline-block;
+}
+
+.navbar .menu-item a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+}
+
+.navbar .menu-item a:hover {
+    background-color: #575757;
+}
+
+/* Remove Emergency Button */
+.emergency-button {
+    display: none;
+}
+
+/* Form Container (Centered Box) */
+.form-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #575757;
+}
+
+/* Links */
+p {
+    text-align: center;
+}
+
+p a {
+    color: #333;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Centering the form container */
+body.login .form-container,
+body.signup .form-container {
+    margin-top: 100px; /* Ensuring the form box appears in the middle */
+}
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.title {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+}
+
+.menu-item {
+    margin-right: 20px;
+    position: relative;
+}
+
+.menu-item a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 10px;
+    display: block;
+}
+
+.menu-item:hover > a {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+/* Form Styles */
+.login-form, .signup-form {
+    width: 300px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-field {
+    margin-bottom: 15px;
+}
+
+.input-field label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+button:hover {
+    background-color: #575757;
+}
+
+p {
+    text-align: center;
+}
+
+p a {
+    color: #333;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+/* Error Message */
+#error-message {
+    text-align: center;
+    font-size: 1em;
+    color: red;
+}

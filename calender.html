@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <style>
+        /* Add some basic styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .calendar {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .day {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .day:hover {
+            background-color: #f1f1f1;
+        }
+
+        .slot {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .slot.booked {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar">
+        <h2>Book an Appointment</h2>
+        <div id="calendar-container"></div>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        if (!sessionStorage.getItem('userLoggedIn')) {
+            alert('You must be logged in to book an appointment.');
+            window.location.href = "login_user.html"; // Redirect to login page if not logged in
+        }
+
+        const calendarContainer = document.getElementById('calendar-container');
+        const message = document.getElementById('message');
+
+        // Get today's date
+        const today = new Date();
+        let startOfNextWeek = new Date(today);
+        startOfNextWeek.setDate(today.getDate() + (7 - today.getDay())); // Next Monday
+        startOfNextWeek.setHours(0, 0, 0, 0); // Reset time to 00:00:00
+
+        // Random available slots for the next week
+        const availableSlots = generateAvailableSlots(startOfNextWeek);
+
+        // Display the calendar for the next week with available slots
+        displayCalendar(availableSlots);
+
+        function generateAvailableSlots(startDate) {
+            const slots = [];
+            for (let i = 0; i < 7; i++) { // For the next 7 days
+                const day = new Date(startDate);
+                day.setDate(startDate.getDate() + i);
+
+                const daySlots = [];
+                const numSlots = Math.floor(Math.random() * 5) + 1; // Random number of available slots (1-5)
+                for (let j = 0; j < numSlots; j++) {
+                    const slotTime = new Date(day);
+                    slotTime.setHours(9 + Math.floor(Math.random() * 6)); // Random time between 9 AM and 2 PM
+                    daySlots.push(slotTime);
+                }
+
+                slots.push({
+                    day: day,
+                    slots: daySlots
+                });
+            }
+            return slots;
+        }
+
+        function displayCalendar(availableSlots) {
+            availableSlots.forEach(day => {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day');
+                dayDiv.innerHTML = `<strong>${day.day.toDateString()}</strong>`;
+                day.slots.forEach(slot => {
+                    const slotDiv = document.createElement('span');
+                    slotDiv.classList.add('slot');
+                    slotDiv.innerHTML = slot.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                    slotDiv.onclick = () => bookSlot(day.day, slot);
+                    dayDiv.appendChild(slotDiv);
+                });
+                calendarContainer.appendChild(dayDiv);
+            });
+        }
+
+        function bookSlot(day, slot) {
+            // Simulate booking the slot
+            message.innerHTML = `You have successfully booked your appointment on ${day.toDateString()} at ${slot.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}.`;
+
+            // Disable the booked slot
+            const allSlots = document.querySelectorAll('.slot');
+            allSlots.forEach(s => {
+                if (s.innerHTML === slot.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})) {
+                    s.classList.add('booked');
+                    s.onclick = null; // Disable click after booking
+                }
+            });
+        }
+    </script>
+</body>
+</html>

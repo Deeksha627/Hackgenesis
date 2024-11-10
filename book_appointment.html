@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApkaDoctor - Book Appointment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Emergency Button (hidden by default) -->
+    <div class="emergency-button">
+        <a href="map.html">Emergency</a>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">ApkaDoctor</div>
+        <div class="menu">
+            <div class="menu-item"><a href="index.html">Home</a></div>
+            <div class="menu-item"><a href="about.html">About Us</a></div>
+            <div class="menu-item">
+                Login
+                <div class="dropdown">
+                    <a href="login_doctor.html">Log in as Doctor</a>
+                    <a href="login_user.html">Log in as User</a>
+                </div>
+            </div>
+            <div class="menu-item">
+                Signup
+                <div class="dropdown">
+                    <a href="signup_doctor.html">Sign up as Doctor</a>
+                    <a href="signup_user.html">Sign up as User</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Appointment Section -->
+    <div class="appointment-section">
+        <h2>Book an Appointment</h2>
+        <button onclick="redirectToBooking()" class="btn-appointment">Book Now</button>
+    </div>
+
+    <script>
+        function redirectToBooking() {
+            // Check if user is logged in
+            window.location.href = "calendar.html"; // Redirect to calendar page
+    
+            
+    </script>
+</body>
+</html>
+        }      
